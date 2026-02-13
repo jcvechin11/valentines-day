@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Valentines ❤️</title>
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, #ffd1dc, #ff9aad);
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+    position: relative;
+}
+/* BACKGROUND VIDEO */
+#bgVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    filter: brightness(0.6) blur(2px);
+}
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 105, 180, 0.25);
+    z-index: -1;
+}
+/* SOFT SPARKLES BEHIND CARD */
+.sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 50%;
+    opacity: 0;
+    animation: sparkleAnim 5s linear infinite;
+}
+
+@keyframes sparkleAnim {
+    0% { transform: translateY(0) scale(0.5); opacity: 0; }
+    10% { opacity: 1; }
+    50% { transform: translateY(-500px) scale(1.2); opacity: 0.5; }
+    100% { transform: translateY(0) scale(0.5); opacity: 0; }
+}
+
+/* FLOATING HEARTS IN BACKGROUND */
+.bg-heart {
+    position: absolute;
+    color: #ff4d6d;
+    opacity: 0.6;
+    animation: drift 10s linear infinite;
+    font-size: 20px;
+    pointer-events: none;
+}
+
+@keyframes drift {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    20% { opacity: 0.4; }
+    50% { opacity: 0.6; }
+    100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+
+/* CARD STYLE */
+.card, .love-card {
+    position: relative;
+    background: rgba(255,255,255,0.95);
+    padding: 50px 70px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* HEADER */
+.card h1, .love-card h1 {
+    color: #ff4d6d;
+    margin-bottom: 15px;
+    font-size: 38px;
+}
+
+/* PARAGRAPH */
+.card p, .love-card p {
+    font-size: 22px;
+    margin-bottom: 35px;
+    color: #d6336c;
+}
+
+/* BUTTON CONTAINER */
+.buttons {
+    position: relative;
+    height: 70px;
+}
+
+/* BUTTON STYLE */
+button {
+    padding: 14px 30px;
+    border: none;
+    border-radius: 35px;
+    font-size: 18px;
+    cursor: pointer;
+    position: absolute;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-weight: bold;
+    width: 150px;
+    margin: auto;
+}
+
+/* YES BUTTON */
+#yes {
+    background: linear-gradient(45deg,#ff6b81,#ff85a1);
+    color: white;
+    left: 0;
+    top: 0;
+    box-shadow: 0 5px 15px rgba(255,107,129,0.6);
+    z-index: 10;
+}
+
+/* NO BUTTON */
+#no {
+    background: #b56576;
+    color: white;
+    right: 30%;
+    top: 0;
+    box-shadow: 0 5px 15px rgba(181,101,118,0.6);
+    z-index: 10;
+}
+
+/* YES HOVER */
+#yes:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 20px #ff6b81, 0 0 40px #ff85a1;
+}
+
+/* HEARTS ON YES */
+.heart {
+    position: absolute;
+    color: #ff4d6d;
+    font-size: 18px;
+    pointer-events: none;
+    animation: float 1.2s linear forwards;
+}
+
+@keyframes float {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(1.8); }
+}
+
+/* LOVE CARD POP */
+.love-card {
+    animation: pop 0.5s ease forwards;
+}
+
+@keyframes pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* CONGRATS OVERLAY */
+.congrats-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 20000;
+}
+.congrats-text {
+    font-size: 48px;
+    color: #fff;
+    text-shadow: 0 6px 30px rgba(0,0,0,0.4);
+    transform: scale(0.8);
+    animation: popIn 0.6s cubic-bezier(.2,.8,.2,1) forwards;
+}
+.congrats-heart {
+    position: absolute;
+    font-size: 28px;
+    animation: heartRise 1.6s linear forwards;
+    opacity: 0.95;
+}
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 14px;
+    font-size: 14px;
+    opacity: 0.95;
+    animation: confettiFall 1.4s linear forwards;
+}
+
+@keyframes popIn {
+    from { transform: scale(0.6); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+@keyframes heartRise {
+    0% { transform: translateY(0) scale(0.8); opacity: 1; }
+    100% { transform: translateY(-220px) scale(1.6); opacity: 0; }
+}
+@keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(120vh) rotate(420deg); opacity: 0; }
+}
+
+/* Accessibility & responsive tweaks */
+button:focus{outline:none;box-shadow:0 0 0 4px rgba(181,101,118,0.12)}
+@media (max-width:520px){
+    .card{padding:20px}
+    .buttons{flex-direction:column;gap:12px}
+    .buttons button{position:relative;width:100%;max-width:320px}
+}
+
+</style>
+</head>
+<body>
+<video autoplay muted loop playsinline id="bgVideo">
+    <source src="romantic-bg.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+<div class="card" id="mainCard">
+    <h1>Happy Valentines Day Darling❤️</h1>
+    <p>Do you love me bebe?</p>
+    <div class="buttons">
+        <button id="yes">Yes 💖</button>
+        <button id="no">No 😜</button>
+    </div>
+</div>
+
+<script>
+const mainCard = document.getElementById("mainCard");
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+
+/* CREATE BACKGROUND SPARKLES */
+for(let i=0;i<30;i++){
+    const sparkle = document.createElement('div');
+    sparkle.className = 'sparkle';
+    sparkle.style.left = Math.random()*window.innerWidth+'px';
+    sparkle.style.top = Math.random()*window.innerHeight+'px';
+    sparkle.style.animationDuration = (3+Math.random()*3)+'s';
+    sparkle.style.width = sparkle.style.height = (2+Math.random()*5)+'px';
+    document.body.appendChild(sparkle);
+}
+
+/* CREATE BACKGROUND FLOATING HEARTS */
+for(let i=0;i<20;i++){
+    const bgHeart = document.createElement('div');
+    bgHeart.className = 'bg-heart';
+    bgHeart.style.fontSize = (20 + Math.random()*30) + 'px'; // random size 20-50px
+    bgHeart.style.left = Math.random()*window.innerWidth+'px';
+    bgHeart.style.animationDuration = (8 + Math.random()*12)+'s'; // random speed
+    bgHeart.innerHTML = '💖';
+    document.body.appendChild(bgHeart);
+}
+
+/* NO button moves anywhere on the page and flees when cursor is near or on it */
+const buttonsContainer = document.querySelector('.buttons');
+let lastMove = 0;
+
+// Move the NO button out of the card so it can run across the whole viewport
+(function relocateNoBtn(){
+    const btnRect = noBtn.getBoundingClientRect();
+    noBtn.style.left = (btnRect.left + window.scrollX) + 'px';
+    noBtn.style.top = (btnRect.top + window.scrollY) + 'px';
+    noBtn.style.position = 'absolute';
+    noBtn.style.zIndex = 9999;
+    noBtn.style.transition = 'left 0.18s ease, top 0.18s ease';
+    document.body.appendChild(noBtn);
+})();
+
+function moveNoButton() {
+    const btnRect = noBtn.getBoundingClientRect();
+    const yesRect = yesBtn.getBoundingClientRect();
+    const padding = 30;
+    let newX, newY, attempts = 0;
+    const maxW = Math.max(0, window.innerWidth - btnRect.width - 10);
+    const maxH = Math.max(0, window.innerHeight - btnRect.height - 10);
+    do {
+        newX = Math.random() * maxW;
+        newY = Math.random() * maxH;
+        attempts++;
+        if (attempts > 150) break; // safety
+    } while (
+        // avoid spawning too close to YES button
+        newX + btnRect.width > yesRect.left - padding &&
+        newX < yesRect.right + padding &&
+        newY + btnRect.height > yesRect.top - padding &&
+        newY < yesRect.bottom + padding
+    );
+    noBtn.style.left = newX + 'px';
+    noBtn.style.top = newY + 'px';
+    lastMove = Date.now();
+}
+
+// Proximity detector: smaller, natural threshold so NO only flees when very close
+document.addEventListener('mousemove', (e) => {
+    const btnRect = noBtn.getBoundingClientRect();
+    const cx = btnRect.left + btnRect.width/2;
+    const cy = btnRect.top + btnRect.height/2;
+    const dx = e.clientX - cx;
+    const dy = e.clientY - cy;
+    const distance = Math.sqrt(dx*dx + dy*dy);
+    const THRESHOLD = (window.innerWidth < 520) ? 60 : 90; // adaptive for small screens
+    if (distance < THRESHOLD && Date.now() - lastMove > 120) {
+        moveNoButton();
+    }
+});
+
+// Also flee immediately if user tries to enter or click the button
+noBtn.addEventListener('mouseenter', () => moveNoButton());
+noBtn.addEventListener('mousedown', (e) => { e.preventDefault(); moveNoButton(); });
+
+// Keep NO button on-screen when window resizes
+function clampNoBtnPosition(){
+    const btnRect = noBtn.getBoundingClientRect();
+    const maxLeft = Math.max(8, window.innerWidth - btnRect.width - 8);
+    const maxTop = Math.max(8, window.innerHeight - btnRect.height - 8);
+    let left = parseFloat(noBtn.style.left) || btnRect.left;
+    let top = parseFloat(noBtn.style.top) || btnRect.top;
+    if (left < 8) left = 8;
+    if (top < 8) top = 8;
+    if (left > maxLeft) left = maxLeft;
+    if (top > maxTop) top = maxTop;
+    noBtn.style.left = left + 'px';
+    noBtn.style.top = top + 'px';
+}
+
+window.addEventListener('resize', () => {
+    clampNoBtnPosition();
+});
+
+/* YES button hearts (pointer-events:none to not block click) */
+yesBtn.addEventListener("mouseover", (e) => {
+    for(let i=0; i<3; i++){
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "💖";
+        heart.style.left = (e.clientX + Math.random()*30 - 15) + "px";
+        heart.style.top = (e.clientY + Math.random()*30 - 15) + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 1000);
+    }
+});
+
+// Show congrats overlay with hearts and confetti (no central text)
+function showCongrats() {
+    const overlay = document.createElement('div');
+    overlay.className = 'congrats-overlay';
+    document.body.appendChild(overlay);
+
+    // spawn many hearts and confetti across the viewport
+    const icons = ['💖','💘','💗','💞','🎉','✨'];
+    for (let i=0;i<26;i++){
+        const el = document.createElement('div');
+        el.className = (i%4===0) ? 'confetti' : 'congrats-heart';
+        el.style.left = (5 + Math.random()*90) + 'vw';
+        el.style.top = (5 + Math.random()*60) + 'vh';
+        el.style.fontSize = (14 + Math.random()*36) + 'px';
+        el.style.opacity = 0.95;
+        el.textContent = icons[Math.floor(Math.random()*icons.length)];
+        el.style.animationDelay = (Math.random()*0.3)+'s';
+        overlay.appendChild(el);
+        setTimeout(() => { try{ el.remove(); }catch(e){} }, 1600 + Math.random()*400);
+    }
+
+    // remove overlay after animation
+    setTimeout(() => overlay.remove(), 1600);
+}
+
+/* YES button click -> show congrats then love card */
+yesBtn.addEventListener("click", () => {
+    showCongrats();
+    setTimeout(() => {
+        mainCard.style.display = "none";
+
+        const loveCard = document.createElement("div");
+        loveCard.className = "love-card";
+        loveCard.innerHTML = `
+            <h1>Yes I knew it 😘</h1>
+            <p>I love you too always bebe 💋❤️</p>
+        `;
+        document.body.appendChild(loveCard);
+    }, 900);
+});
+</script>
+</body>
+</html>
