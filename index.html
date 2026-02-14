@@ -70,7 +70,7 @@ body {
 }
 
 /* CARD STYLE */
-.card, .love-card {
+.card {
     position: relative;
     background: rgba(255,255,255,0.95);
     padding: 50px 70px;
@@ -80,24 +80,56 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.love-card {
+    position: relative;
+    padding: 50px 70px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-size: cover;
+    background-position: center;
+    background-image: url('valentines-bg.jpg');
+    background-attachment: fixed;
+}
+
 /* HEADER */
-.card h1, .love-card h1 {
+.card h1 {
     color: #ff4d6d;
     margin-bottom: 15px;
     font-size: 38px;
 }
 
+.love-card h1 {
+    color: #ffffff;
+    margin-bottom: 15px;
+    font-size: 38px;
+    -webkit-text-stroke: 2px rgba(0,0,0,0.8);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 4px 8px rgba(0,0,0,0.6), 0 6px 16px rgba(0,0,0,0.4);
+}
+
 /* PARAGRAPH */
-.card p, .love-card p {
+.card p {
     font-size: 22px;
     margin-bottom: 35px;
     color: #d6336c;
+}
+
+.love-card p {
+    font-size: 22px;
+    margin-bottom: 35px;
+    color: #ff0000;
+    -webkit-text-stroke: 1px #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 4px 8px rgba(0,0,0,0.6), 0 6px 12px rgba(0,0,0,0.4);
 }
 
 /* BUTTON CONTAINER */
 .buttons {
     position: relative;
     height: 70px;
+}
+.love-card {
+    background-image: url(mj.jpg);
 }
 
 /* BUTTON STYLE */
@@ -114,21 +146,44 @@ button {
     margin: auto;
 }
 
+/* BACK BUTTON */
+.back-btn {
+    padding: 12px 25px;
+    width: auto;
+    font-size: 16px;
+    background: linear-gradient(45deg,#5335ff,#cdb4ff);
+    color: white;
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    margin-top: 20px;
+    box-shadow: 0 5px 15px rgba(123,104,238,0.6);
+}
+
+.back-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px #7b68ee, 0 0 40px #9370db;
+}
+
 /* YES BUTTON */
 #yes {
     background: linear-gradient(45deg,#ff6b81,#ff85a1);
     color: white;
-    left: 0;
+    left: 10%;
     top: 0;
     box-shadow: 0 5px 15px rgba(255,107,129,0.6);
     z-index: 10;
+    width: 220px;
+    text-align: center;
 }
 
 /* NO BUTTON */
 #no {
-    background: #b56576;
+    background: #970021;
     color: white;
-    right: 30%;
+    right: 33%;
     top: 0;
     box-shadow: 0 5px 15px rgba(181,101,118,0.6);
     z-index: 10;
@@ -231,7 +286,7 @@ button:focus{outline:none;box-shadow:0 0 0 4px rgba(181,101,118,0.12)}
     <h1>Happy Valentines Day Darling❤️</h1>
     <p>Do you love me bebe?</p>
     <div class="buttons">
-        <button id="yes">Yes 💖</button>
+        <button id="yes">Yes, Of Course 💖</button>
         <button id="no">No 😜</button>
     </div>
 </div>
@@ -240,6 +295,9 @@ button:focus{outline:none;box-shadow:0 0 0 4px rgba(181,101,118,0.12)}
 const mainCard = document.getElementById("mainCard");
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
+
+// Store NO button's original position
+let noBtnOriginalX, noBtnOriginalY;
 
 /* CREATE BACKGROUND SPARKLES */
 for(let i=0;i<30;i++){
@@ -275,6 +333,11 @@ let lastMove = 0;
     noBtn.style.position = 'absolute';
     noBtn.style.zIndex = 9999;
     noBtn.style.transition = 'left 0.18s ease, top 0.18s ease';
+    
+    // Store original position
+    noBtnOriginalX = parseFloat(noBtn.style.left);
+    noBtnOriginalY = parseFloat(noBtn.style.top);
+    
     document.body.appendChild(noBtn);
 })();
 
@@ -379,17 +442,31 @@ function showCongrats() {
 
 /* YES button click -> show congrats then love card */
 yesBtn.addEventListener("click", () => {
+    noBtn.style.display = "none";
     showCongrats();
     setTimeout(() => {
         mainCard.style.display = "none";
 
         const loveCard = document.createElement("div");
         loveCard.className = "love-card";
+        loveCard.id = "loveCard";
         loveCard.innerHTML = `
             <h1>Yes I knew it 😘</h1>
             <p>I love you too always bebe 💋❤️</p>
+            <button class="back-btn">← Back</button>
         `;
         document.body.appendChild(loveCard);
+
+        // Add back button click handler
+        const backBtn = loveCard.querySelector('.back-btn');
+        backBtn.addEventListener('click', () => {
+            loveCard.remove();
+            mainCard.style.display = '';
+            noBtn.style.display = "";
+            // Reset NO button to original position
+            noBtn.style.left = noBtnOriginalX + 'px';
+            noBtn.style.top = noBtnOriginalY + 'px';
+        });
     }, 900);
 });
 </script>
